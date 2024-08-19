@@ -99,8 +99,21 @@ const loginUser = async (req, res, next) => {
     }
 };
 
+const logoutUser = (req,res)=>{
+    // console.log(req.cookie)
+    res.cookie("token",'',{
+        expires:new Date(0),
+        httpOnly:true,
+        withCredentials:true
+    })
+    return res.status(200).json({
+        success:true,
+        message:"Logged out successfully"
+    })
+}
 
 
 
 
-module.exports = {registerUser,loginUser}
+
+module.exports = {registerUser,loginUser,logoutUser}

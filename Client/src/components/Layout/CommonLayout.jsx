@@ -1,10 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Header from '../Header'
 
 const CommonLayout = () => {
   return (
-    <div>
-      <h1>Common Layout</h1>
+    <div className='bg-zinc-700 min-h-[100vh] pb-10 text-white w-full  '>
+      <Header/>
       <Outlet/>
     </div>
   )

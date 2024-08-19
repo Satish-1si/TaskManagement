@@ -4,7 +4,8 @@ const port = 3000;
 require('./database/db');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
-const userRouter = require('./routes/userRoute')
+const userRouter = require('./routes/userRoute');
+const taskRouter = require('./routes/taskRoute')
 
 app.use(cors({
     origin:['http://localhost:5173'],
@@ -15,7 +16,9 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
+app.use('/api/task', taskRouter);
+
 
 app.get('/api', (req, res) => {
     res.status(200).json({ message: 'Hello World!' });

@@ -1,7 +1,8 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+require('dotenv').config();
 
 mongoose.connect(
-    "mongodb+srv://jatavankit486:ZPbcEr53g5Q9Hw7W@cluster0.4f709.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    process.env.MONGO_URL
 ).then(()=>{
     console.log("Connected to the database")
 }).catch((err)=>{
