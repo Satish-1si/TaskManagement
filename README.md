@@ -1,15 +1,32 @@
-Task Management App
-🚀 Overview
-Welcome to the Task Management App! This MERN stack application helps you efficiently manage your tasks with user authentication, task management, and drag-and-drop functionality. It allows users to create, update, delete, and organize tasks based on priority.
+# MERN Task Manager App
 
-📜 Features
---User Authentication: Secure login and registration.
---Task Management: Create, update, and delete tasks.
---Priority-Based Organization: Categorize tasks into High, Medium, and Low priority.
---Draggable Tasks: Reorganize tasks by dragging and dropping.
---Responsive Design: Accessible and user-friendly across all devices.
+Welcome to the MERN Task Manager App! This application provides a comprehensive task management solution built using the MERN stack. It supports user authentication, task creation, deletion, updating, and features drag-and-drop functionality for managing task priorities.
 
-🛠 Technologies Used
---Frontend: React, Tailwind CSS, Remix Icons
---Backend: Node.js, Express
---Database: MongoDB
+## Features
+
+- **User Authentication**: Secure login and session management.
+- **Task Management**:
+  - **Create**: Add new tasks to your list.
+  - **Update**: Modify details of existing tasks.
+  - **Delete**: Remove tasks from your list.
+  - **Priority-Based Sorting**: Organize tasks into High, Medium, and Low priority columns.
+  - **Draggable Tasks**: Move tasks between priority columns using drag-and-drop.
+  - **Completion Tracking**: Mark tasks as complete.
+
+## Technologies Used
+
+- **Frontend**: React, Tailwind CSS, React Beautiful DnD
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Authentication**: JWT (JSON Web Token)
+- **Environment Management**: dotenv
+
+## Getting Started
+
+Follow these instructions to set up the project locally:
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- MongoDB
+- Git
