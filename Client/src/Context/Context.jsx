@@ -74,6 +74,59 @@ const handleDelete = async (taskId) => {
 };
 
 
+const onDragEnd = async (result) => {
+  const { destination, source, draggableId } = result;
+
+  if (!destination) return;
+
+  if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+  ) {
+      return;
+  }
+
+  const draggedTask = tasks.find(task => task._id === draggableId);
+
+  let newPriority;
+  switch (destination.droppableId) {
+      case 'highPriority':
+          newPriority = 'High';
+          break;
+      case 'mediumPriority':
+          newPriority = 'Medium';
+          break;
+      case 'lowPriority':
+          newPriority = 'Low';
+          break;
+      default:
+          return;
+  }
+
+  const updatedTask = { ...draggedTask, priority: newPriority };
+
+  // Update task priority in the state
+  const updatedTasks = tasks.map(task =>
+      task._id === draggableId ? updatedTask : task
+  );
+  setTasks(updatedTasks);
+
+  // Update task priority in the database
+  try {
+      await axios.put(`http://localhost:3000/api/task/update-priority/${draggableId}`, {
+          priority: newPriority
+      },{
+          withCredentials: true,
+      });
+      toast.success('Task priority updated!');
+  } catch (error) {
+      console.error('Failed to update task priority:', error);
+      toast.error('Failed to update task priority')
+  }
+};
+
+
+
 
 
 useEffect(() => {
@@ -84,7 +137,7 @@ useEffect(() => {
     
     
     return (
-        <TaskManagerContext.Provider value={{user ,handleDelete , setUser,taskData, setTaskData,tasks, setTasks}}>
+        <TaskManagerContext.Provider value={{user ,handleDelete ,onDragEnd, setUser,taskData, setTaskData,tasks, setTasks}}>
         {children}
         </TaskManagerContext.Provider>
     )

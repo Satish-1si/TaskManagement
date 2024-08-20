@@ -119,29 +119,69 @@ const deleteTask = async (req, res, next) => {
     }
 };
 
-const updateTask = async (req,res,next)=>{
-    console.log(req.params.id)
+const updateTask = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id)
-        task.title = req.body.title;
-        task.description = req.body.description;
-        task.priority = req.body.priority;
-        task.status = req.body.status;
-        await task.save();
-        return res.status(200).json({
-            success:true,
-            message:"Task updated successfully",
-            task
+        const { id } = req.params;
+        const { title, description, priority, status } = req.body;
+        console.log("from update task.....")
+        const updatedTask = await Task.findByIdAndUpdate(
+            id,
+            { title, description, priority, status },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedTask) {
+            return res.status(404).json({
+                success: false,
+                message: 'Task not found',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Task updated successfully',
+            task: updatedTask,
         });
-        } catch (error) {
-        console.log(error.message || error);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong, please try again.',
+        });
+    }
+};
+
+
+const updateTaskPriority = async (req, res) => {
+    const { id } = req.params;
+    const { priority } = req.body;
+
+    try {
+        const task = await Task.findById(id);
+
+        if (!task) {
+            return res.status(404).json({
+                success: false,
+                message: 'Task not found',
+            });
+        }
+
+        task.priority = priority;
+        await task.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Task priority updated successfully',
+            task,
+        });
+    } catch (error) {
         return res.status(500).json({
             success: false,
-            message: error.message || "Something went wrong! Please try again."
+            message: error.message || 'Something went wrong!',
         });
     }
 }
 
-module.exports = {userTask,addTask,deleteTask,updateTask};
+module.exports = {userTask,addTask,deleteTask,updateTask,updateTaskPriority};
 
 // module.exports = {addTask,getTasks}

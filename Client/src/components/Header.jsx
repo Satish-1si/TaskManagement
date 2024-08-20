@@ -23,7 +23,7 @@ const Header = () => {
         }
       };
   return (
-    <div className='bg-zinc-700 sticky top-0 h-15 border-b-2 flex items-center justify-between border-gray-600 text-white w-full py-4 px-5'>
+    <div className='bg-zinc-700 sticky z-30 top-0 h-15 border-b-2 flex items-center justify-between border-gray-600 text-white w-full py-4 px-5'>
       <h1 className='font-bold text-2xl'>Header</h1>
       <div className='flex gap-3 items-center justify-center text-sm font-semibold'>
         <Link to={'list'} className='hover:text-gray-300'>Home</Link>
