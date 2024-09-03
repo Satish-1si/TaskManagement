@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const authenticateUser = (req, res, next) => {
     const token = req.cookies.token;
@@ -9,7 +10,7 @@ const authenticateUser = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, "JWT_SECERET"); 
+        const decoded = jwt.verify(token, process.env.JWT_SECERET); 
         // console.log(decoded,"========decoded")// Use your secret key
         req.userId = decoded.getId; // Attach user ID to request object
         next();

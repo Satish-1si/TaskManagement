@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 function generateToken(getId){
-    return jwt.sign({getId},"JWT_SECERET",{
+    return jwt.sign({getId},process.env.JWT_SECERET,{
         expiresIn:3*24*60*60,
     })
 }

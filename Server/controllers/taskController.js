@@ -65,7 +65,6 @@ const addTask = async (req, res, next) => {
         });
     }
 }
-
 // const getTask = async (req,res,next)=>{
 //     try {
 //         const tasks = await Task.find().populate('user');
@@ -123,7 +122,7 @@ const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, priority, status } = req.body;
-        console.log("from update task.....")
+        // console.log("from update task.....")
         const updatedTask = await Task.findByIdAndUpdate(
             id,
             { title, description, priority, status },

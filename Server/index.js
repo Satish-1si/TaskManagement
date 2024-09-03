@@ -5,10 +5,11 @@ require('./database/db');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRoute');
-const taskRouter = require('./routes/taskRoute')
+const taskRouter = require('./routes/taskRoute');
+require('dotenv').config();
 
 app.use(cors({
-    origin:['http://localhost:5173'],
+    origin:[process.env.FRONTEND_BASE_URL,],
     methods:['GET','POST','PUT','DELETE'],
     credentials:true
 }));

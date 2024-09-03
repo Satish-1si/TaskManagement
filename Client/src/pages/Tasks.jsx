@@ -100,7 +100,7 @@ const Tasks = () => {
       {/* Task Creation Dialog */}
       {open && (
         <div className="fixed inset-0 z-10 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-zinc-600 text-black p-6 rounded-lg w-96">
+          <div className="bg-zinc-600 text-white  p-6 rounded-lg w-96">
             <h2 className="text-xl font-bold mb-4">Create a New Task</h2>
             <form >
               <input
@@ -109,7 +109,7 @@ const Tasks = () => {
                 placeholder="Task Title"
                 value={taskData.title}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 bg-zinc-600 border border-gray-300 rounded mb-4"
                 required
               />
               <textarea
@@ -117,14 +117,14 @@ const Tasks = () => {
                 placeholder="Task Description"
                 value={taskData.description}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 border bg-zinc-600 border-gray-300 rounded mb-4"
                 required
               />
               <select
                 name="priority"
                 value={taskData.priority}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 border bg-zinc-600 border-gray-300 rounded mb-4"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -134,7 +134,7 @@ const Tasks = () => {
                 name="status"
                 value={taskData.status}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 border bg-zinc-600 border-gray-300 rounded mb-4"
               >
                 <option value="To Do">To Do</option>
                 <option value="In Progress">In Progress</option>
@@ -179,7 +179,7 @@ const Tasks = () => {
                             className="p-4 bg-red-300 rounded shadow-md relative"
                           >
                             <h3 className="text-lg font-bold">Title: {task.title}</h3>
-                            <p className="text-gray-700">Desc: {task.description}</p>
+                            <p className="text-gray-700 overflow-hidden">Desc: {task.description}</p>
                             <div className="flex justify-between items-center mt-2">
                               <div className='flex gap-3'>
                                 <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">{task.status}</span>
@@ -225,7 +225,7 @@ const Tasks = () => {
                             className="p-4 bg-yellow-400 rounded shadow-md relative"
                           >
                             <h3 className="text-lg font-bold">Title: {task.title}</h3>
-                            <p className="text-gray-700">Desc: {task.description}</p>
+                            <p className="text-gray-700  overflow-hidden">Desc: {task.description}</p>
                             <div className="flex justify-between items-center mt-2">
                               <div className='flex gap-3'>
                                 <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-bold rounded">{task.status}</span>
@@ -269,7 +269,7 @@ const Tasks = () => {
                             className="p-4 bg-green-400 rounded shadow-md relative"
                           >
                             <h3 className="text-lg font-bold">Title: {task.title}</h3>
-                            <p className="text-gray-700">Desc: {task.description}</p>
+                            <p className="text-gray-700  overflow-hidden">Desc: {task.description}</p>
                             <div className="flex justify-between items-center mt-2">
                               <div className='flex gap-3'>
                                 <span className="px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">{task.status}</span>
