@@ -10,7 +10,7 @@ require('dotenv').config();
 console.log(process.env.FRONTEND_BASE_URL)
 
 app.use(cors({
-    origin: process.env.FRONTEND_BASE_URL,
+    origin:[ process.env.FRONTEND_BASE_URL,true],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
