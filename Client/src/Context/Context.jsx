@@ -17,7 +17,7 @@ function TaskManagerProvider({ children }) {
 
   const checkUserLoggedIn = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/user/check-login', { withCredentials: true });
+      const response = await axios.get('https://task-management-mern-app.onrender.com/api/user/check-login', { withCredentials: true });
 
       // console.log(response.data, "from useEffect");
 
@@ -44,7 +44,7 @@ function TaskManagerProvider({ children }) {
   // Function to fetch tasks for the logged-in user
   const fetchUserTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/task/user-tasks', { withCredentials: true });
+      const response = await axios.get('https://task-management-mern-app.onrender.com/api/task/user-tasks', { withCredentials: true });
       if (response.data.success) {
         setTasks(response.data.tasks);
       } else {
@@ -58,7 +58,7 @@ function TaskManagerProvider({ children }) {
   const handleDelete = async (taskId) => {
     try {
       // Call the API to delete the task
-      const response = await axios.delete(`http://localhost:3000/api/task/delete-task/${taskId}`, {
+      const response = await axios.delete(`https://task-management-mern-app.onrender.com/api/task/delete-task/${taskId}`, {
         withCredentials: true,
       });
 
@@ -113,7 +113,7 @@ function TaskManagerProvider({ children }) {
 
     // Update task priority in the database
     try {
-      await axios.put(`http://localhost:3000/api/task/update-priority/${draggableId}`, {
+      await axios.put(`https://task-management-mern-app.onrender.com/api/task/update-priority/${draggableId}`, {
         priority: newPriority
       }, {
         withCredentials: true,

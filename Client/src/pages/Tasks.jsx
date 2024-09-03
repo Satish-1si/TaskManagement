@@ -25,7 +25,7 @@ const Tasks = () => {
     // console.log(taskData,"from handle submit")
     try {
       // Sending a POST request to the backend to add a new task
-      const response = await axios.post('http://localhost:3000/api/task/create-task', taskData, {
+      const response = await axios.post('https://task-management-mern-app.onrender.com/api/task/create-task', taskData, {
         withCredentials: true,
       });
 
@@ -62,7 +62,7 @@ const Tasks = () => {
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3000/api/task/update-task/${editingTask._id}`, editingTask, {
+      const response = await axios.put(`https://task-management-mern-app.onrender.com/api/task/update-task/${editingTask._id}`, editingTask, {
         withCredentials: true,
       });
       //  console.log(response.data,"from handleupdate task frontend")

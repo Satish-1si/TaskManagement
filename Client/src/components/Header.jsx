@@ -11,7 +11,7 @@ const Header = () => {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.get('http://localhost:3000/api/user/logout', { withCredentials: true });
+          const response = await axios.get('https://task-management-mern-app.onrender.com/api/user/logout', { withCredentials: true });
           if(response.data.success){
             setUser(null);
             toast.success( response.data.message);
