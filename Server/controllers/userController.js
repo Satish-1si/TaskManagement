@@ -33,7 +33,7 @@ const registerUser = async (req, res, next) => {
             const token = generateToken(savedUser._id);
             res.cookie('token', token, {
                 withCreadentials: true,
-                httpOnly: false
+                httpOnly: true
             });
 
             res.status(201).json({
@@ -43,7 +43,8 @@ const registerUser = async (req, res, next) => {
                     id: savedUser._id,
                     name: savedUser.name,
                     email: savedUser.email,
-                }
+                },
+                token
             })
         }
 
@@ -90,6 +91,7 @@ const loginUser = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
             },
+            token
         });
     } catch (error) {
         console.log('Login Error:', error);

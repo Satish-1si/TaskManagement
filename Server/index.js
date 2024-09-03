@@ -9,9 +9,9 @@ const taskRouter = require('./routes/taskRoute');
 require('dotenv').config();
 
 app.use(cors({
-    origin:[process.env.FRONTEND_BASE_URL,],
-    methods:['GET','POST','PUT','DELETE'],
-    credentials:true
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 app.use(cookieParser());

@@ -36,7 +36,7 @@ const SignUp = () => {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        // console.log(response.data)
+        localStorage.setItem('token',response.data.token)
         // Reset form data
         navigate('/tasks/list')
         setFormData({
