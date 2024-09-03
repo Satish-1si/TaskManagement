@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const isAuth = async (req,res)=>{
     const token = req.cookies.token;
-    // console.log('Token from auth middleware:', token);
+    console.log('Token from auth middleware:', token);
     if(!token){
         return res.status(401).json({message:"Unauthorized User!"})
     }

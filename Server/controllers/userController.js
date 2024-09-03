@@ -33,7 +33,9 @@ const registerUser = async (req, res, next) => {
             const token = generateToken(savedUser._id);
             res.cookie('token', token, {
                 withCreadentials: true,
-                httpOnly: true
+                httpOnly: true,
+                secure: true, // Required for SameSite=None
+             sameSite: 'None'
             });
 
             res.status(201).json({
@@ -79,7 +81,9 @@ const loginUser = async (req, res, next) => {
         const token = generateToken(user._id);
             res.cookie('token', token, {
                 withCreadentials: true,
-                httpOnly: false
+                httpOnly: true,
+                secure: true, // Required for SameSite=None
+                sameSite: 'None'
             });
 
         // Respond with the user data
@@ -107,6 +111,8 @@ const logoutUser = (req,res)=>{
     res.cookie("token",'',{
         expires:new Date(0),
         httpOnly:true,
+        secure: true, // Required for SameSite=None
+    sameSite: 'None',
         withCredentials:true
     })
     return res.status(200).json({
