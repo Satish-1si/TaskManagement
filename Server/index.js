@@ -7,9 +7,10 @@ const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRoute');
 const taskRouter = require('./routes/taskRoute');
 require('dotenv').config();
+console.log(process.env.FRONTEND_BASE_URL)
 
 app.use(cors({
-    origin: '*',
+    origin: process.env.FRONTEND_BASE_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
