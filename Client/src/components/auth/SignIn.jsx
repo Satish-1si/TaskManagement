@@ -25,6 +25,7 @@ const SignIn = () => {
       if (response.data.success) {
         // Handle successful login, e.g., redirect to dashboard
        toast.success( response.data.message);
+       localStorage.setItem("token",response.data.token);
        navigate('/tasks/list')
      
         // You can save the token to localStorage or context here
