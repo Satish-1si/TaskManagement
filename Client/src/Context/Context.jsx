@@ -23,7 +23,7 @@ function TaskManagerProvider({ children }) {
 
   const checkUserLoggedIn = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/user/check-login', { withCredentials: true });
+      const response = await axios.get('https://task-management-git-main-satish-manepallis-projects.vercel.app/api/user/check-login', { withCredentials: true });
 
       // console.log(response.data, "from useEffect");
 
@@ -50,7 +50,7 @@ function TaskManagerProvider({ children }) {
   const fetchUserTasks = async (page = 1, limit = 10, input = '', priority = '', status = '') => {
     try {
       const response = await axios.get(
-        'http://localhost:3000/api/task/user-tasks',
+        'https://task-management-git-main-satish-manepallis-projects.vercel.app/api/task/user-tasks',
         {
           params: { page, limit, input, priority, status },
           withCredentials: true,
@@ -72,7 +72,7 @@ function TaskManagerProvider({ children }) {
     console.log("jjrjsfhnn",taskId)
     try {
       // Call the API to delete the task
-      const response = await axios.delete(`http://localhost:3000/api/task/delete-task/${taskId}`, {
+      const response = await axios.delete(`https://task-management-git-main-satish-manepallis-projects.vercel.app/api/task/delete-task/${taskId}`, {
         withCredentials: true,
       });
 
@@ -128,7 +128,7 @@ function TaskManagerProvider({ children }) {
 
     // Update task priority in the database
     try {
-      await axios.put(`http://localhost:3000/api/task/update-priority/${draggableId}`, {
+      await axios.put(`https://task-management-git-main-satish-manepallis-projects.vercel.app/api/task/update-priority/${draggableId}`, {
         priority: newPriority
       }, {
         withCredentials: true,

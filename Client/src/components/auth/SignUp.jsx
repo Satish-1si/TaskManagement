@@ -31,7 +31,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/user/register', formData, {
+      const response = await axios.post('https://task-management-git-main-satish-manepallis-projects.vercel.app/api/user/register', formData, {
         withCredentials: true
       });
       if (response.data.success) {

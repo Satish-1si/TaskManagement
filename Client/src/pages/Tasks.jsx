@@ -35,7 +35,7 @@ const Tasks = () => {
   
     try {
       // Sending a POST request to add a new task
-      const response = await axios.post('http://localhost:3000/api/task/create-task', taskData, {
+      const response = await axios.post('https://task-management-git-main-satish-manepallis-projects.vercel.app/api/task/create-task', taskData, {
         withCredentials: true,
       });
   
@@ -86,7 +86,7 @@ const Tasks = () => {
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3000/api/task/update-task/${editingTask._id}`, editingTask, {
+      const response = await axios.put(`https://task-management-git-main-satish-manepallis-projects.vercel.app/api/task/update-task/${editingTask._id}`, editingTask, {
         withCredentials: true,
       });
       //  console.log(response.data,"from handleupdate task frontend")

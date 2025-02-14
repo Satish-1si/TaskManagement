@@ -1,7 +1,7 @@
 # MERN Task Manager App
 
 Welcome to the MERN Task Manager App! This application provides a comprehensive task management solution built using the MERN stack. It supports user authentication, task creation, deletion, updating, and features drag-and-drop functionality for managing task priorities.
-Live link - https://task-management-mern-app-1.onrender.com/
+<!-- Live link - https://task-management-mern-app-1.onrender.com/ -->
 
 ## Features
 
@@ -28,6 +28,6 @@ Follow these instructions to set up the project locally:
 
 ### Prerequisites
 
-- Node.js (v14 or later)
+- Node.js (v18 or later)
 - MongoDB
 - Git
