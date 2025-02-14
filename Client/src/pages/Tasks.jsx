@@ -3,12 +3,21 @@ import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { TaskManagerContext } from '../Context/Context';
 import { toast } from 'react-toastify';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Pagination } from 'react-bootstrap';
 
 const Tasks = () => {
   const [open, setOpen] = useState(false);
 
-  const { taskData, setTaskData, tasks, setTasks, onDragEnd, handleDelete } = useContext(TaskManagerContext);
-  //  console.log(tasks)
+  const { taskData, setTaskData, tasks, setTasks, onDragEnd, handleDelete, fetchUserTasks } = useContext(TaskManagerContext);
+  let Data=(tasks?.records)?tasks?.records:[]
+  let totalPages = tasks?.totalPages || 1;
+  let currentPage = tasks?.currentPage || 1;
+
+  const [activePage, setActivePage] = useState(currentPage);
+  const tasksPerPage = 10;
+
+ 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -22,55 +31,71 @@ const Tasks = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(taskData,"from handle submit")
+    console.log(taskData, "from handleSubmit"); 
+  
     try {
-      // Sending a POST request to the backend to add a new task
-      const response = await axios.post('https://task-management-mern-app.onrender.com/api/task/create-task', taskData, {
+      // Sending a POST request to add a new task
+      const response = await axios.post('http://localhost:3000/api/task/create-task', taskData, {
         withCredentials: true,
       });
-
+  
+      console.log(response, "0000");
+  
       if (response.data.success) {
-        toast.success(response.data.message)
-        // Update the task list with the newly added task
-        setTasks([...tasks, response.data.task]);
-        // Reset form data
+        toast.success(response.data.message);
+       console.log(response.data)
+        setTasks([...Data, response.data.task]);
+  
+        fetchUserTasks();
+  
         setTaskData({
           title: '',
           description: '',
           priority: 'Low',
           status: 'To Do',
         });
-        handleClose(); // Close the dialog
+        console.log("((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((")
+        handleClose(); // Close the dialog/modal
       }
     } catch (error) {
-      console.error('Error adding task:', error.response?.data?.message || error.message);
-      toast.error(error.response?.data?.message || error.message)
+      console.error('Error adding task:', error);
+      toast.error(error.response?.data?.message || 'Failed to add task');
     }
   };
+  
   // Filter tasks by priority
-  const highPriorityTasks = tasks.filter(task => task.priority === 'High');
-  const mediumPriorityTasks = tasks.filter(task => task.priority === 'Medium');
-  const lowPriorityTasks = tasks.filter(task => task.priority === 'Low');
+  const highPriorityTasks = Data.filter(task => task.priority === 'HIGH');
+  const mediumPriorityTasks = Data.filter(task => task.priority === 'MEDIUM');
+  const lowPriorityTasks = Data.filter(task => task.priority === 'LOW');
   const [editingTask, setEditingTask] = useState(null); // State for tracking the task being edit
-  //handle update task details 
+  //handle update task details
+  
+ 
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+    console.log(pageNumber, tasksPerPage)
+    fetchUserTasks(pageNumber, tasksPerPage, "", "", ""); 
+  };
+  
 
   const handleEditClick = (task) => {
-    // console.log(task)
-    setEditingTask(task); // Set the task to be edited
+    setEditingTask(task); 
   };
 
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`https://task-management-mern-app.onrender.com/api/task/update-task/${editingTask._id}`, editingTask, {
+      const response = await axios.put(`http://localhost:3000/api/task/update-task/${editingTask._id}`, editingTask, {
         withCredentials: true,
       });
       //  console.log(response.data,"from handleupdate task frontend")
       if (response.data.success) {
         // Update the tasks in the state
         setTasks((prevTasks) =>
-          prevTasks.map((task) => (task._id === editingTask._id ? response.data.task : task))
+          prevTasks.records.map((task) => (task._id === editingTask._id ? response.data.task : task))
         );
+        fetchUserTasks()
         toast.success(response.data.message);
         setEditingTask(null); // Close the form after updating
       } else {
@@ -78,7 +103,7 @@ const Tasks = () => {
         toast.error(response.data.message)
       }
     } catch (error) {
-      console.error('Error updating task:', error);
+      console.error('Error updating task26785679809-:', error);
       toast.error(error.response?.data?.message || error.message)
     }
   };
@@ -88,7 +113,8 @@ const Tasks = () => {
 
   return (
     <div className="p-6 ">
-      <h1 className="text-3xl font-bold mb-6 text-center">Task Manager</h1>
+      <h1 className="text-3xl font-semibold font-roboto
+      b-2  text-center">Task Manager</h1>
 
       <button
         onClick={handleOpen}
@@ -99,8 +125,10 @@ const Tasks = () => {
 
       {/* Task Creation Dialog */}
       {open && (
-        <div className="fixed inset-0 z-10 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-zinc-600 text-white  p-6 rounded-lg w-96">
+        <div className="fixed inset-0 z-10 bg-slate-950
+         bg-opacity-50 flex items-center justify-center">
+          <div className="bg-neutral-500
+           text-white  p-6 rounded-lg w-96">
             <h2 className="text-xl font-bold mb-4">Create a New Task</h2>
             <form >
               <input
@@ -159,7 +187,33 @@ const Tasks = () => {
         </div>
       )}
 
-      <h2 className="text-2xl font-bold  h-auto mt-8 mb-4">Task List</h2>
+<div className="flex items-center justify-between mt-8 mb-4">
+  <h2 className="text-2xl font-bold">Task List</h2>
+  <div className="flex justify-center my-4">
+        <Pagination>
+          <Pagination.Prev
+            onClick={() => handlePageChange(activePage - 1)}
+            disabled={activePage === 1}
+          />
+          {[...Array(totalPages)].map((_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === activePage}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(activePage + 1)}
+            disabled={activePage === totalPages}
+          />
+        </Pagination>
+      </div>
+
+</div>
+
+
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="px-4 max-w-full mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -182,8 +236,8 @@ const Tasks = () => {
                             <p className="text-gray-700 overflow-hidden">Desc: {task.description}</p>
                             <div className="flex justify-between items-center mt-2">
                               <div className='flex gap-3'>
-                                <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">{task.status}</span>
-                                <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">{task.priority}</span>
+                                <span className="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded">{task.status}</span>
+                                <span className="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded">{task.priority}</span>
 
 
                               </div>
@@ -215,38 +269,42 @@ const Tasks = () => {
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <h2 className="text-2xl font-bold mb-4 text-yellow-600">Medium Priority</h2>
                   <ul className="space-y-4 bg-slate-600 min-h-[50vh] py-3 px-3 rounded-md border-[1px] border-dashed border-gray-400">
-                    {mediumPriorityTasks.map((task, index) => (
-                      <Draggable key={task._id} draggableId={task._id} index={index}>
-                        {(provided) => (
-                          <li
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="p-4 bg-yellow-400 rounded shadow-md relative"
-                          >
-                            <h3 className="text-lg font-bold">Title: {task.title}</h3>
-                            <p className="text-gray-700  overflow-hidden">Desc: {task.description}</p>
-                            <div className="flex justify-between items-center mt-2">
-                              <div className='flex gap-3'>
-                                <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-bold rounded">{task.status}</span>
-                                <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-bold rounded">{task.priority}</span>
+                    {mediumPriorityTasks.map((task, index) =>{
+                      return (
+                        <Draggable key={task._id} draggableId={task._id} index={index}>
+                          {(provided) => (
+                            <li
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="p-4 bg-yellow-400 rounded shadow-md relative"
+                            >
+                              <h3 className="text-lg font-bold">Title: {task.title}</h3>
+                              <p className="text-gray-700  overflow-hidden">Desc: {task.description}</p>
+                              <div className="flex justify-between items-center mt-2">
+                                <div className='flex gap-3'>
+                                  <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-medium rounded">{task.status}</span>
+                                  <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-medium rounded">{task.priority}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                  <button
+                                    className="text-blue-500 hover:text-blue-700"
+                                    onClick={() => handleEditClick(task)} // Handle edit click
+                                  >
+                                    <i className="ri-edit-line"></i>
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete(task._id)}
+                                    className="text-red-500 hover:text-red-700"><i className="ri-delete-bin-line"></i></button>
+                                </div>
                               </div>
-                              <div className="flex gap-2">
-                                <button
-                                  className="text-blue-500 hover:text-blue-700"
-                                  onClick={() => handleEditClick(task)} // Handle edit click
-                                >
-                                  <i className="ri-edit-line"></i>
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(task._id)}
-                                  className="text-red-500 hover:text-red-700"><i className="ri-delete-bin-line"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                        )}
-                      </Draggable>
-                    ))}
+                            </li>
+                          )}
+                        </Draggable>
+                      )
+                    }
+                    
+                    )}
                     {provided.placeholder}
                   </ul>
                 </div>
@@ -272,8 +330,8 @@ const Tasks = () => {
                             <p className="text-gray-700  overflow-hidden">Desc: {task.description}</p>
                             <div className="flex justify-between items-center mt-2">
                               <div className='flex gap-3'>
-                                <span className="px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">{task.status}</span>
-                                <span className="px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">{task.priority}</span>
+                                <span className="px-2 py-1 bg-green-600 text-white text-xs font-medium rounded">{task.status}</span>
+                                <span className="px-2 py-1 bg-green-600 text-white text-xs font-medium rounded">{task.priority}</span>
                               </div>
                               <div className="flex gap-2">
                                 <button
@@ -340,7 +398,6 @@ const Tasks = () => {
           </button>
         </form>
       )}
-
     </div>
   );
 };

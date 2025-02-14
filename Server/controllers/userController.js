@@ -3,42 +3,41 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-function generateToken(getId){
-    return jwt.sign({getId},process.env.JWT_SECERET,{
-        expiresIn:3*24*60*60,
-    })
+function generateToken(id) {
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined in environment variables.");
+    }
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: 3 * 24 * 60 * 60, // 3 days
+    });
 }
 
 const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;
-    // console.log(req.body)
     try {
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
+
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
+
         // Create a new user
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword,
-        });
-        // Save the user to the database
+        const newUser = new User({ name, email, password: hashedPassword });
         const savedUser = await newUser.save();
 
         if (savedUser) {
             const token = generateToken(savedUser._id);
             res.cookie('token', token, {
-                withCreadentials: true,
                 httpOnly: true,
-                secure: true, // Required for SameSite=None
-             sameSite: 'None'
+                secure: process.env.NODE_ENV === 'production', // Use secure only in production
+                sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+                withCredentials: true
             });
 
-            res.status(201).json({
+            return res.status(201).json({
                 success: true,
                 message: 'User registered successfully',
                 user: {
@@ -47,26 +46,23 @@ const registerUser = async (req, res, next) => {
                     email: savedUser.email,
                 },
                 token
-            })
+            });
         }
 
-
     } catch (error) {
-        console.log(error);
+        console.error("Register Error:", error);
         return res.status(500).json({
             success: false,
-            message: "server Message from /register"
-        })
+            message: "Server error from /register"
+        });
     }
-}
+};
 
 const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
-
     try {
         // Check if the user exists
         const user = await User.findOne({ email });
-        // console.log(user)
         if (!user) {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
@@ -79,15 +75,14 @@ const loginUser = async (req, res, next) => {
 
         // Generate a token
         const token = generateToken(user._id);
-            res.cookie('token', token, {
-                withCreadentials: true,
-                httpOnly: true,
-                secure: true, // Required for SameSite=None
-                sameSite: 'None'
-            });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+            withCredentials: true
+        });
 
-        // Respond with the user data
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: 'User logged in successfully',
             user: {
@@ -98,7 +93,7 @@ const loginUser = async (req, res, next) => {
             token
         });
     } catch (error) {
-        console.log('Login Error:', error);
+        console.error("Login Error:", error);
         return res.status(500).json({
             success: false,
             message: "Server error from /login",
@@ -106,23 +101,19 @@ const loginUser = async (req, res, next) => {
     }
 };
 
-const logoutUser = (req,res)=>{
-    // console.log(req.cookie)
-    res.cookie("token",'',{
-        expires:new Date(0),
-        httpOnly:true,
-        secure: true, // Required for SameSite=None
-    sameSite: 'None',
-        withCredentials:true
-    })
+const logoutUser = (req, res) => {
+    res.cookie("token", '', {
+        expires: new Date(0),
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        withCredentials: true
+    });
+
     return res.status(200).json({
-        success:true,
-        message:"Logged out successfully"
-    })
-}
+        success: true,
+        message: "Logged out successfully"
+    });
+};
 
-
-
-
-
-module.exports = {registerUser,loginUser,logoutUser}
+module.exports = { registerUser, loginUser, logoutUser };

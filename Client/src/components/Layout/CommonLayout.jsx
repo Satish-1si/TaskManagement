@@ -4,7 +4,7 @@ import Header from '../Header'
 
 const CommonLayout = () => {
   return (
-    <div className='bg-zinc-700 min-h-[100vh] pb-10 text-white w-full  '>
+    <div className='bg-black min-h-[100vh] pb-10 text-white w-full  '>
       <Header/>
       <Outlet/>
     </div>

@@ -13,7 +13,7 @@ const App = () => {
       <Route path="/auth" element={<Auth />} />
       <Route path='/tasks' element={<CommonLayout/>}> 
         <Route path='list' element={<Tasks/>} />
-        <Route path='scrum-board' element={<ScrumBoard />}/>
+        {/* <Route path='scrum-board' element={<ScrumBoard />}/> */}
     </Route>
       
       <Route path="/*" element={<NotFound/>} />

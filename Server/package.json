@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "author": "ankit",
+  "author": "satish Manepalli",
   "license": "ISC",
   "description": "",
   "dependencies": {
